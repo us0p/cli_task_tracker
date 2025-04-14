@@ -2,7 +2,8 @@ from typing import Literal
 from datetime import datetime, UTC
 from uuid import uuid4
 
-TaskStatus = Literal['todo', 'in-progress', 'done']
+TaskStatus = Literal["todo", "in-progress", "done"]
+
 
 class Task:
     def __init__(self, status: TaskStatus, description: str = ""):
