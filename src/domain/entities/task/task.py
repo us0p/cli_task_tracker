@@ -7,8 +7,8 @@ TaskStatus = Literal["todo", "in-progress", "done"]
 
 class Task:
     def __init__(self, status: TaskStatus, description: str = ""):
-        self.id = uuid4()
-        self.status = status
+        self.id = uuid4().hex
+        self.status: TaskStatus = status
         self.description = description
         self.createdAt = datetime.now(UTC)
         self.updatedAt = datetime.now(UTC)
