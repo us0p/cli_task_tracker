@@ -8,6 +8,9 @@ from src.application.tasks_usecases.update import UpdateTaskUseCase
 from src.application.tasks_usecases.read_by_status import (
     ReadByStatusTaskUseCase,
 )
+from src.application.tasks_usecases.update_status import (
+    UpdateTaskStatusUseCase,
+)
 from src.domain.entities.task.task import Task, TaskStatus
 from src.domain.repositories.task_repository import ITaskRepository
 
@@ -35,6 +38,16 @@ class TaskController:
         self, task_id: str, task_inputs: TaskInputs
     ) -> TaskDict | None:
         task = UpdateTaskUseCase.exec(self.repo, task_id, task_inputs)
+
+        if not task:
+            return None
+
+        return TaskDictMapper.task_to_dict(task)
+
+    def update_status(
+        self, task_id: str, status: TaskStatus
+    ) -> TaskDict | None:
+        task = UpdateTaskStatusUseCase.exec(self.repo, task_id, status)
 
         if not task:
             return None

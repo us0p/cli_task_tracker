@@ -13,6 +13,9 @@ from src.interfaces.drivers.file_access import JsonDB
 
 
 class TaskRepository(ITaskRepository, JsonDB):
+    def __init__(self):
+        super().__init__()
+
     def _read_all_dict(self) -> list[TaskDict]:
         with open(self._file_name, "r") as f:
             return loads(f.read())
@@ -34,6 +37,22 @@ class TaskRepository(ITaskRepository, JsonDB):
                 task["status"] = new_task.status
                 task["description"] = new_task.description
                 task["updatedAt"] = datetime.now(UTC).isoformat()
+                updated_task = TaskDictMapper.dict_to_task(task)
+                break
+
+        with open(self._file_name, "w") as f:
+            f.write(dumps(tasks))
+
+        return updated_task
+
+    def update_status(
+        self, task_id: str, status: TaskStatus
+    ) -> Task | None:
+        tasks = self._read_all_dict()
+        updated_task = None
+        for task in tasks:
+            if task["id"] == task_id:
+                task["status"] = status
                 updated_task = TaskDictMapper.dict_to_task(task)
                 break
 

@@ -2,14 +2,16 @@
 Track and manage your tasks in the CLI.
 
 ## Requirements
-- Add Task.
-- Update Task.
-- Delete Task.
-- Mark a task as in progress or done.
-- List all tasks.
-- List all tasks that are done.
-- List all tasks that are not done.
-- List all tasks that are in progress.
+- [x] Add Task.
+- [x] Update Task.
+- [x] Delete Task.
+- [x] Mark a task as in progress or done.
+- [x] List all tasks.
+- [x] List all tasks that are done.
+- [x] List all tasks that are not done.
+- [x] List all tasks that are in progress.
+- Add tests
+- Client should receive only important information, remove "createdAt" and "updatedAt" from response
 
 ## Constraints
 - Use positional arguments in command line to accept user inputs.
