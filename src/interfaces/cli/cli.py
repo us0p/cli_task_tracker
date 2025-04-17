@@ -1,20 +1,29 @@
-from argparse import ArgumentParser
-from tabulate import tabulate
+from argparse import ArgumentParser, _SubParsersAction
 
-from src.domain.repositories.task_repository import ITaskRepository
-from src.controllers.task import TaskController
+from src.interfaces.cli.cli_command_router import CLICommandRouter
 
 
 class CLI:
-    def __init__(self, repo: ITaskRepository):
-        self.controller = TaskController(repo)
+    def __init__(self, command_routes: CLICommandRouter):
+        self._command_routes = command_routes
         self.parser = ArgumentParser(
             prog="Task Tracker", description="CLI Task manager"
         )
 
-        subparser = self.parser.add_subparsers()
+        subparser = self.parser.add_subparsers(
+            dest="command", required=True
+        )
 
-        # Create command
+        self._add_create_command(subparser)
+        self._add_read_command(subparser)
+        self._add_update_command(subparser)
+        self._add_delete_command(subparser)
+
+    def parse_cli(self):
+        args = self.parser.parse_args()
+        args.func(args)
+
+    def _add_create_command(self, subparser: _SubParsersAction):
         create_task_parser = subparser.add_parser(
             "create", help="Creates a new task"
         )
@@ -31,9 +40,11 @@ class CLI:
             required=True,
             help="A short description of the task",
         )
-        create_task_parser.set_defaults(func=self.create_task)
+        create_task_parser.set_defaults(
+            func=self._command_routes.create_command
+        )
 
-        # Read command
+    def _add_read_command(self, subparser: _SubParsersAction):
         read_task_parser = subparser.add_parser(
             "read", help="Reads tasks in the store"
         )
@@ -43,9 +54,11 @@ class CLI:
             choices=["todo", "in-progress", "done"],
             help="List tasks with this status",
         )
-        read_task_parser.set_defaults(func=self.read_tasks)
+        read_task_parser.set_defaults(
+            func=self._command_routes.read_command
+        )
 
-        # Update command
+    def _add_update_command(self, subparser: _SubParsersAction):
         update_task_parser = subparser.add_parser(
             "update", help="Updates the task as a whole"
         )
@@ -64,63 +77,17 @@ class CLI:
             "--description",
             help="A short description of the task",
         )
-        update_task_parser.set_defaults(func=self.update_task)
+        update_task_parser.set_defaults(
+            func=self._command_routes.update_command
+        )
 
-        # Delete command
+    def _add_delete_command(self, subparser: _SubParsersAction):
         delete_task_parser = subparser.add_parser(
             "delete", help="Deletes the provided command"
         )
         delete_task_parser.add_argument(
             "id", help="The ID of the task to delete"
         )
-        delete_task_parser.set_defaults(func=self.delete_task)
-
-    def parse_cli(self):
-        args = self.parser.parse_args()
-
-        try:
-            args.func(args)
-        except AttributeError:
-            self.parser.print_help()
-
-    def create_task(self, input_options):
-        task = self.controller.create(
-            {
-                "status": input_options.status,
-                "description": input_options.description,
-            }
+        delete_task_parser.set_defaults(
+            func=self._command_routes.delete_command
         )
-
-        print(tabulate([task], headers="keys"))
-
-    def read_tasks(self, input_options):
-        tasks = self.controller.read(input_options.status)
-        print(tabulate(tasks, headers="keys"))
-
-    def delete_task(self, input_options):
-        task = self.controller.delete(input_options.id)
-
-        if task:
-            return print(tabulate([task], headers="keys"))
-
-        print(f"Task with ID '{input_options.id}' doesn't exist")
-
-    def update_task(self, input_options):
-        task = None
-        if input_options.description:
-            task = self.controller.update(
-                input_options.id,
-                {
-                    "status": input_options.status,
-                    "description": input_options.description,
-                },
-            )
-        else:
-            task = self.controller.update_status(
-                input_options.id, input_options.status
-            )
-
-        if task:
-            return print(tabulate([task], headers="keys"))
-
-        print(f"Task with ID '{input_options.id}' doesn't exist")
