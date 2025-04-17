@@ -13,18 +13,18 @@ class TestCLI:
 
     @pytest.fixture(autouse=True)
     def _patch_stderr_write(self):
-        oritinal_writer = stderr.write
+        original_writer = stderr.write
         self.output = []
 
         def _stderr_write(
             message: str,
         ) -> int:
             self.output.append(message)
-            return oritinal_writer(message)
+            return original_writer(message)
 
         stderr.write = _stderr_write
         yield
-        stderr.write = oritinal_writer
+        stderr.write = original_writer
 
     def test_create_requires_status(self):
         with pytest.raises(SystemExit):
