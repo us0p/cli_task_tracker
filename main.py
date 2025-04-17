@@ -1,6 +1,7 @@
 from src.interfaces.cli.cli import CLI
+from src.interfaces.repositories.task import TaskRepository
 
-
-cli = CLI()
+repo = TaskRepository()
+cli = CLI(repo)
 
 cli.parse_cli()

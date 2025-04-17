@@ -10,8 +10,8 @@ Track and manage your tasks in the CLI.
 - [x] List all tasks that are done.
 - [x] List all tasks that are not done.
 - [x] List all tasks that are in progress.
-- Add tests
-- Client should receive only important information, remove "createdAt" and "updatedAt" from response
+- [ ] Add tests
+- [ ] Client should receive only important information, remove "createdAt" and "updatedAt" from response
 
 ## Constraints
 - Use positional arguments in command line to accept user inputs.

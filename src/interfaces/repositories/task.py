@@ -13,8 +13,8 @@ from src.interfaces.drivers.file_access import JsonDB
 
 
 class TaskRepository(ITaskRepository, JsonDB):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, file_name="db.json"):
+        super().__init__(file_name)
 
     def _read_all_dict(self) -> list[TaskDict]:
         with open(self._file_name, "r") as f:

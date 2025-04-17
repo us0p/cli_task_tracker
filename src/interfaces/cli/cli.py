@@ -1,14 +1,13 @@
 from argparse import ArgumentParser
 from tabulate import tabulate
 
-from src.interfaces.repositories.task import TaskRepository
+from src.domain.repositories.task_repository import ITaskRepository
 from src.controllers.task import TaskController
 
 
 class CLI:
-    def __init__(self):
-        self.repo = TaskRepository()
-        self.controller = TaskController(self.repo)
+    def __init__(self, repo: ITaskRepository):
+        self.controller = TaskController(repo)
         self.parser = ArgumentParser(
             prog="Task Tracker", description="CLI Task manager"
         )
@@ -22,7 +21,6 @@ class CLI:
         create_task_parser.add_argument(
             "-s",
             "--status",
-            type=str,
             required=True,
             choices=["todo", "in-progress", "done"],
             help="The status of the task",
@@ -30,7 +28,6 @@ class CLI:
         create_task_parser.add_argument(
             "-d",
             "--description",
-            type=str,
             required=True,
             help="A short description of the task",
         )
