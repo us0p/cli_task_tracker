@@ -33,7 +33,7 @@ class TaskRepository(ITaskRepository, JsonDB):
         tasks = self._read_all_dict()
         updated_task = None
         for task in tasks:
-            if task["id"] == task_id:
+            if task["id"].startswith(task_id):
                 task["status"] = new_task.status
                 task["description"] = new_task.description
                 task["updatedAt"] = datetime.now(UTC).isoformat()
@@ -51,7 +51,7 @@ class TaskRepository(ITaskRepository, JsonDB):
         tasks = self._read_all_dict()
         updated_task = None
         for task in tasks:
-            if task["id"] == task_id:
+            if task["id"].startswith(task_id):
                 task["status"] = status
                 updated_task = TaskDictMapper.dict_to_task(task)
                 break
@@ -67,7 +67,7 @@ class TaskRepository(ITaskRepository, JsonDB):
         deleted_task = None
 
         for task in tasks:
-            if task["id"] == task_id:
+            if task["id"].startswith(task_id):
                 deleted_task = TaskDictMapper.dict_to_task(task)
                 continue
             updated_tasks.append(task)

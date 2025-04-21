@@ -21,7 +21,7 @@ class CLI:
 
     def parse_cli(self):
         args = self.parser.parse_args()
-        args.func(args)
+        return args.func(args)
 
     def _add_create_command(self, subparser: _SubParsersAction):
         create_task_parser = subparser.add_parser(

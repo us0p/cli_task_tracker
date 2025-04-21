@@ -1,5 +1,6 @@
-from tabulate import tabulate
+from typing import List, Union
 
+from src.application.mappers.task import TaskDict
 from src.domain.repositories.task_repository import ITaskRepository
 from src.controllers.task import TaskController
 
@@ -8,21 +9,18 @@ class CLICommandRouter:
     def __init__(self, repo: ITaskRepository):
         self.controller = TaskController(repo)
 
-    def create_command(self, input_options):
-        task = self.controller.create(
+    def create_command(self, input_options) -> TaskDict:
+        return self.controller.create(
             {
                 "status": input_options.status,
                 "description": input_options.description,
             }
         )
 
-        print(tabulate([task], headers="keys"))
+    def read_command(self, input_options) -> List[TaskDict]:
+        return self.controller.read(input_options.status)
 
-    def read_command(self, input_options):
-        tasks = self.controller.read(input_options.status)
-        print(tabulate(tasks, headers="keys"))
-
-    def update_command(self, input_options):
+    def update_command(self, input_options) -> Union[TaskDict, str]:
         task = None
         if input_options.description:
             task = self.controller.update(
@@ -38,14 +36,14 @@ class CLICommandRouter:
             )
 
         if task:
-            return print(tabulate([task], headers="keys"))
+            return task
 
-        print(f"Task with ID '{input_options.id}' doesn't exist")
+        return f"Task with ID '{input_options.id}' doesn't exist"
 
-    def delete_command(self, input_options):
+    def delete_command(self, input_options) -> Union[TaskDict, str]:
         task = self.controller.delete(input_options.id)
 
         if task:
-            return print(tabulate([task], headers="keys"))
+            return task
 
-        print(f"Task with ID '{input_options.id}' doesn't exist")
+        return f"Task with ID '{input_options.id}' doesn't exist"
