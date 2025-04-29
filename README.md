@@ -1,5 +1,5 @@
 # CLI Task Tracker
-A modular, command-line task tracking tool built using clean architecture principles.
+A modular, command-line task tracking tool built using clean architecture principles for [this](https://roadmap.sh/projects/task-tracker) project idea.
 
 ## 🧱 Architecture Overview
 The project follows a **Clean Architecture** pattern, divided into the following layers:
