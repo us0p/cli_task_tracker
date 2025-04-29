@@ -58,7 +58,7 @@ pytest
 
 ```bash
 # List all tasks
-python main.py list
+python main.py read
 
 # Add a new task
 python main.py create --description "Buy groceries" --status "todo"
