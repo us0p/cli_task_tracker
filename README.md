@@ -18,15 +18,14 @@ This separation ensures that changes in external tools (CLI parsing, display, et
 - **Unit Testing** with [pytest](https://docs.pytest.org)
 
 ## 📂 Project Structure
-cli_task_tracker/
-├── main.py # Entry point 
-├── src/
-│ ├── domain/ # Core business logic 
-│ ├── application/ # Application services 
-│ ├── interfaces/ # CLI, display, and repo implementations 
-│ └── controllers/ # Optional controllers 
+cli_task_tracker/  
+├── main.py # Entry point  
+├── src/  
+│ ├── domain/ # Core business logic  
+│ ├── application/ # Application services  
+│ ├── interfaces/ # CLI, display, and repo implementations  
+│ └── controllers/ # Optional controllers  
 └── README.md # Project documentation
-
 
 ## 🚀 How to Use
 
