@@ -32,7 +32,7 @@ cli_task_tracker/
 ### 1. Clone and Set Up
 
 ```bash
-git clone <your_repo_url>
+git clone https://github.com/us0p/cli_task_tracker
 cd cli_task_tracker
 python3 -m venv venv
 source venv/bin/activate
@@ -61,8 +61,8 @@ pytest
 python main.py list
 
 # Add a new task
-python main.py add --title "Buy groceries" --due "2024-05-01"
+python main.py create --description "Buy groceries" --status "todo"
 ```
 
-🧑‍💻 Author
+## 🧑‍💻 Author
 Developed by [us0p](https://github.com/us0p) — Clean, extensible, testable code for simple task management in the terminal.
