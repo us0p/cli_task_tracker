@@ -1,61 +1,69 @@
-# Task Tracker
-Track and manage your tasks in the CLI.
+# CLI Task Tracker
+A modular, command-line task tracking tool built using clean architecture principles.
 
-## Requirements
-- [x] Add Task.
-- [x] Update Task.
-- [x] Delete Task.
-- [x] Mark a task as in progress or done.
-- [x] List all tasks.
-- [x] List all tasks that are done.
-- [x] List all tasks that are not done.
-- [x] List all tasks that are in progress.
-- [ ] Add tests
-- [ ] Client should receive only important information, remove "createdAt" and "updatedAt" from response
+## 🧱 Architecture Overview
+The project follows a **Clean Architecture** pattern, divided into the following layers:
 
-## Constraints
-- Use positional arguments in command line to accept user inputs.
-- Use a JSON file to store the tasks in the current directory.
-- The JSON file should be created if doesn't exist.
-- Use the native file system module to interact with the JSON file.
-- Do not use any external libraries or frameworks to build this project.
-- Handle errors and edge cases gracefully.
+- **Domain Layer** (`src/domain`): Core business logic, entities (`Task`), and domain-specific rules.
+- **Application Layer** (`src/application`): Application logic orchestrating domain entities, not directly dependent on any framework or interface.
+- **Interface Layer** (`src/interfaces`): Adapters for user interfaces (CLI), output formatting (tabulation), and persistence (repository pattern).
+- **Controller Layer** (`src/controllers`): Coordinates between interface and application logic (if applicable).
 
-## Task Properties
-Each task should have the following properties
-- id: unique identifier
-- description?: string
-- status ['todo' | 'in-progress' | 'done']: 'todo'
-- createdAt: date
-- updatedAt: date
+This separation ensures that changes in external tools (CLI parsing, display, etc.) don't affect core logic.
 
-## Architecture
-### Entities
-**Task**  
-Expects status as input, description is optional. Other fields are provded on creation.
+## 🛠 Tools & Technologies
 
-**Methods**:  
-- validate() -> Raises EntityValidationError if invalid status.
+- **Python 3.12**
+- **Tabulated Output** with [tabulate](https://pypi.org/project/tabulate/)
+- **Unit Testing** with [pytest](https://docs.pytest.org)
 
-### Repositories
-- TaskRepository: Read/Writes to JSON files. Receive and return Task objects.
+## 📂 Project Structure
+cli_task_tracker/
+├── main.py # Entry point 
+├── src/
+│ ├── domain/ # Core business logic 
+│ ├── application/ # Application services 
+│ ├── interfaces/ # CLI, display, and repo implementations 
+│ └── controllers/ # Optional controllers 
+└── README.md # Project documentation
 
-### Use cases
-- Create Task
-    - can't create external fields
-- Update Task
-    - can't update id
-    - can't add external fields
-- Delete Task
-- List Tasks
-    - filter by status
 
-### DTOs
-- TaskCLIDTO: Provides formatting for CLI output.
+## 🚀 How to Use
 
-### Controllers
-- TaskController: Provides interaction between use cases, repository and DTOs.
+### 1. Clone and Set Up
 
-### External interfaces
-- CLI: binds Controllers to user inputs.
-- TaskRepository: Implementation uses fs module to handle JSON files.
+```bash
+git clone <your_repo_url>
+cd cli_task_tracker
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 2. Run the CLI
+
+```bash
+python main.py --help
+```
+
+Use available CLI commands to add, view, or manage tasks. The command router handles argument parsing and routes commands appropriately.
+
+### 3. Run Tests
+Unit tests are located alongside domain and interface logic. Use pytest to run all tests:
+
+```
+pytest
+```
+
+## 📌 Example Commands
+
+```bash
+# List all tasks
+python main.py list
+
+# Add a new task
+python main.py add --title "Buy groceries" --due "2024-05-01"
+```
+
+🧑‍💻 Author
+Developed by [us0p](https://github.com/us0p) — Clean, extensible, testable code for simple task management in the terminal.

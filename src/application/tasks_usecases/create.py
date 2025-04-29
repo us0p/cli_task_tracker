@@ -7,4 +7,5 @@ class CreateTaskUseCase:
     @classmethod
     def exec(cls, repo: ITaskRepository, task_input: TaskInputs) -> Task:
         task = Task(task_input["status"], task_input["description"])
+        task.validate()
         return repo.create(task)

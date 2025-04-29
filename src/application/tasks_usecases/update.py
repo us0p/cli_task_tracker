@@ -12,5 +12,6 @@ class UpdateTaskUseCase:
         new_task: TaskInputs,
     ) -> Task | None:
         task = Task(new_task["status"], new_task["description"])
+        task.validate()
         task.id = task_id
         return repo.update(task_id, task)

@@ -32,8 +32,7 @@ class TaskDictFaker:
 
 
 class TestCLIDisplayer:
-    @pytest.fixture(autouse=True)
-    def setup_data(self):
+    def setup_method(self):
         self.data: List[TaskDict] = []
         for _ in range(10):
             fake = TaskDictFaker()
